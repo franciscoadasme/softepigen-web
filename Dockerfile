@@ -8,4 +8,4 @@ RUN shards install --frozen
 COPY ./ /app/
 RUN shards build --no-debug --release --static web
 
-CMD ["./app/bin/web"]
+CMD ["/app/bin/web"]
