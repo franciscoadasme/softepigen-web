@@ -1,25 +1,6 @@
 require "kemal"
 require "softepigen"
 
-def run(file, amplicon_size, primer_size, allowed_cpg, kmer)
-  chromosome = ""
-  amplicons = [] of Softepigen::Amplicon
-  file.each_line do |line|
-    next unless line.starts_with?('>')
-
-    name = line[1..]
-    tokens = name.split(/[\-:]/)
-    chromosome = tokens[0]
-    seq_offset = tokens[1]?.try(&.to_f.to_i) || 1
-
-    seq = Softepigen::Region.new file.read_line, seq_offset
-    forward_regions, reverse_regions = Softepigen.find_primers(seq, primer_size, kmer)
-    amplicons.concat Softepigen.generate_amplicons(
-      forward_regions, reverse_regions, amplicon_size, allowed_cpg)
-  end
-  {chromosome, Softepigen.fold_amplicons(amplicons)}
-end
-
 get "/" do
   render "src/views/index.ecr", "src/views/layout.ecr"
 end
@@ -44,7 +25,10 @@ post "/upload" do |env|
 
   begin
     Log.info { "Processing file #{file_upload.filename}..." }
-    chromosome, amplicons = run file_upload.tempfile, amplicon_size, primer_size, allowed_cpg, kmer
+    file_upload.tempfile.rewind
+    amplicons = Softepigen.find_amplicons file_upload.tempfile, amplicon_size, primer_size, allowed_cpg, kmer
+    file_upload.tempfile.rewind
+    chromosome = file_upload.tempfile.read_line.lchop('>').split(/[\-:]/)[0]
   rescue err : Exception
     Log.warn exception: err
     halt env, 500, "Error processing file"
