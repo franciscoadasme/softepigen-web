@@ -1,4 +1,50 @@
-<div class="w-[52rem] mx-auto p-5 bg-white rounded-xl border border-gray-200">
+<div
+  class="w-[52rem] mx-auto p-5 bg-white rounded-xl border border-gray-200"
+  x-data="{
+    submitting: false,
+    uploadFile: async () => {
+      const formData = new FormData($refs.form);
+      const fileStem = formData
+        .get('fasta')
+        .name.replace(/^.*[\\/]/, '')
+        .replace(/\.[^/.]+$/, '');
+      const bedFile = `${fileStem}.bed`;
+
+      const response = await fetch($refs.form.action, {
+        method: $refs.form.method,
+        body: formData,
+      });
+      if (response.ok) {
+        const data = await response.json();
+        dispatchEvent(
+          new CustomEvent('analysis-finished', {
+            detail: {
+              amplicons: data.amplicons,
+              bed: data.bed,
+              bedFile: bedFile,
+              chromosome: data.chromosome,
+            },
+            bubbles: true,
+          })
+        );
+      } else {
+        message = await response.text();
+        if (message.includes('<html>')) {
+          document.documentElement.innerHTML = message;
+        } else {
+          dispatchEvent(
+            new CustomEvent('analysis-failed', {
+              detail: { message: message },
+              bubbles: true,
+            })
+          );
+        }
+      }
+    },
+  }"
+  @analysis-finished.window="submitting = false"
+  @analysis-failed.window="submitting = false"
+>
   <h2 class="mb-6 text-2xl font-semibold">Upload FASTA File</h2>
 
   <form
@@ -7,6 +53,8 @@
     method="post"
     enctype="multipart/form-data"
     class="space-y-4"
+    x-ref="form"
+    @submit.prevent="submitting = true; uploadFile()"
   >
     <div
       class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors duration-200"
@@ -17,6 +65,7 @@
         accept=".fasta,.fa,.fas,.txt"
         class="block w-full text-center file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600 transition-colors duration-200"
         required
+        :disabled="submitting"
       />
       <p class="mt-2 text-sm text-gray-500">
         Supported formats: .fasta, .fa, .fas, .txt
@@ -95,9 +144,13 @@
       id="submit-button"
       type="submit"
       class="w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md hover:bg-blue-600 disabled:opacity-70 disabled:cursor-not-allowed disabled:bg-blue-500"
+      :disabled="submitting"
     >
-      <span>Analyze</span>
-      <span class="hidden flex justify-center items-center gap-2 loading">
+      <span x-show="!submitting">Analyze</span>
+      <span
+        class="flex justify-center items-center gap-2 loading"
+        x-show="submitting"
+      >
         <svg
           class="size-5 animate-spin text-white"
           xmlns="http://www.w3.org/2000/svg"
@@ -152,7 +205,7 @@
     bedFile = $event.detail.bedFile;
     chromosome = $event.detail.chromosome;
     fetched = true;
-    mesage = '';
+    message = '';
   "
   @analysis-failed.window="
     amplicons = [];
@@ -224,7 +277,7 @@
       <p
         class="text-gray-400 text-sm"
         x-text="
-          `${message}. Please check the input and try again.` || 
+          message ? `${message}. Please check the input and try again.` :
           'No amplicons could be found with the given parameters. Please try \
           adjusting the parameters and uploading the file again.'
         "
@@ -232,5 +285,3 @@
     </div>
   </div>
 </div>
-
-<script src="/js/form.js" defer></script>
