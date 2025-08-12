@@ -27,6 +27,7 @@ post "/upload" do |env|
     Log.info { "Processing file #{file_upload.filename}..." }
     file_upload.tempfile.rewind
     amplicons = Softepigen.find_amplicons file_upload.tempfile, primer_size, amplicon_size, allowed_cpg, kmer
+amplicons = Softepigen.fold_amplicons(amplicons)
     file_upload.tempfile.rewind
     chromosome = file_upload.tempfile.read_line.lchop('>').split(/[\-:]/)[0]
   rescue err : Exception
