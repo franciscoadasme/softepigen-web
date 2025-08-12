@@ -32,7 +32,7 @@ post "/upload" do |env|
     chromosome = file_upload.tempfile.read_line.lchop('>').split(/[\-:]/)[0]
   rescue err : Exception
     Log.warn exception: err
-    halt env, 500, "Error processing file"
+    halt env, 500, "Failed to process file due to #{err}"
   end
 
   env.response.headers["Content-Type"] = "application/json"
