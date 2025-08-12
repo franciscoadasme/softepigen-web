@@ -28,7 +28,11 @@ const uploadFile = async () => {
   });
   if (!response.ok) {
     message = await response.text();
-    showToast(message, `Please check the input and try again.`, true);
+    if (message.includes("<html>")) {
+      // error page returned
+      document.documentElement.innerHTML = message;
+      return;
+    }
     dispatchEvent(
       new CustomEvent("analysis-failed", {
         detail: { message: message },
@@ -50,11 +54,6 @@ const uploadFile = async () => {
       },
       bubbles: true,
     })
-  );
-
-  showToast(
-    "Analysis finished!",
-    `${bedFile} was downloaded. Please check your Downloads folder.`
   );
 
   form.reset();
