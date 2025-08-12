@@ -30,8 +30,9 @@ post "/upload" do |env|
     amplicons = Softepigen.fold_amplicons(amplicons)
     file_upload.tempfile.rewind
     chromosome = file_upload.tempfile.read_line.lchop('>').split(/[\-:]/)[0]
+    bed_content = String.build { |io| Softepigen.write_bed io, chromosome, amplicons }
   rescue err : Exception
-    Log.warn exception: err
+    Log.error exception: err
     halt env, 500, "Failed to process file due to #{err}"
   end
 
@@ -49,8 +50,7 @@ post "/upload" do |env|
         },
       }
     end,
-    # FIXME: bed fails with amplicons empty
-    "bed"        => String.build { |io| Softepigen.write_bed io, chromosome, amplicons },
+    "bed"        => bed_content,
     "chromosome" => chromosome,
   }.to_json
 end
