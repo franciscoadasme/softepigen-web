@@ -36,13 +36,18 @@ const uploadFile = async () => {
     return;
   }
 
-  const blob = await response.blob();
-  const url = URL.createObjectURL(blob);
-  const fakeLink = document.createElement("a");
-  fakeLink.href = url;
-  fakeLink.download = bedFile;
-  fakeLink.click();
-  URL.revokeObjectURL(url);
+  const data = await response.json();
+  dispatchEvent(
+    new CustomEvent("analysis-finished", {
+      detail: {
+        amplicons: data.amplicons,
+        bed: data.bed,
+        bedFile: bedFile,
+        chromosome: data.chromosome,
+      },
+      bubbles: true,
+    })
+  );
 
   showToast(
     "Analysis finished!",

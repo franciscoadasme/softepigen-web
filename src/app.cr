@@ -27,19 +27,32 @@ post "/upload" do |env|
     Log.info { "Processing file #{file_upload.filename}..." }
     file_upload.tempfile.rewind
     amplicons = Softepigen.find_amplicons file_upload.tempfile, primer_size, amplicon_size, allowed_cpg, kmer
-amplicons = Softepigen.fold_amplicons(amplicons)
+    amplicons = Softepigen.fold_amplicons(amplicons)
     file_upload.tempfile.rewind
     chromosome = file_upload.tempfile.read_line.lchop('>').split(/[\-:]/)[0]
   rescue err : Exception
     Log.warn exception: err
     halt env, 500, "Error processing file"
   end
-  bedfile = File.tempfile ".bed"
-  Softepigen.write_bed bedfile, chromosome, amplicons
 
-  filename = "#{Path[file_upload.filename || "output"].stem}.bed"
-  env.response.headers["Content-Disposition"] = %{attachment; filename="#{filename}"}
-  send_file env, bedfile.path, "text/plain"
+  env.response.headers["Content-Type"] = "application/json"
+  {
+    "amplicons" => amplicons.map do |amp|
+      {
+        "start":    amp.forward_primer.start,
+        "stop":     amp.reverse_primer.stop,
+        "size":     amp.size,
+        "sequence": amp.to_s,
+        "primers":  {
+          "forward": amp.forward_primer.to_s,
+          "reverse": amp.reverse_primer.to_s,
+        },
+      }
+    end,
+    # FIXME: bed fails with amplicons empty
+    "bed"        => String.build { |io| Softepigen.write_bed io, chromosome, amplicons },
+    "chromosome" => chromosome,
+  }.to_json
 end
 
 Kemal.run
