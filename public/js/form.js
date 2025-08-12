@@ -27,10 +27,13 @@ const uploadFile = async () => {
     body: formData,
   });
   if (!response.ok) {
-    showToast(
-      await response.text(),
-      `Please check the input and try again.`,
-      true
+    message = await response.text();
+    showToast(message, `Please check the input and try again.`, true);
+    dispatchEvent(
+      new CustomEvent("analysis-failed", {
+        detail: { message: message },
+        bubbles: true,
+      })
     );
     resetButton();
     return;

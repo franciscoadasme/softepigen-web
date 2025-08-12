@@ -129,13 +129,13 @@
 </div>
 
 <div
-  id="bed"
   x-data="{
     amplicons: [],
     bed: '',
     bedFile: '',
     chromosome: '',
     fetched: false,
+    message: '',
     downloadBed() {
       const blob = new Blob([this.bed], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);
@@ -152,6 +152,15 @@
     bedFile = $event.detail.bedFile;
     chromosome = $event.detail.chromosome;
     fetched = true;
+    mesage = '';
+  "
+  @analysis-failed.window="
+    amplicons = [];
+    bed = '';
+    bedFile = '';
+    chromosome = '';
+    fetched = true;
+    message = $event.detail.message;
   "
   x-show="fetched"
 >
@@ -208,11 +217,18 @@
     </svg>
 
     <div class="flex-1">
-      <p class="font-semibold text-red-500">No amplicons found</p>
-      <p class="text-gray-400">
-        No amplicons could be found with the given parameters. Please try
-        adjusting the parameters and uploading the file again.
-      </p>
+      <p
+        class="font-semibold text-red-500"
+        x-text="message ? 'Something went wrong' : 'No amplicons found'"
+      ></p>
+      <p
+        class="text-gray-400 text-sm"
+        x-text="
+          `${message}. Please check the input and try again.` || 
+          'No amplicons could be found with the given parameters. Please try \
+          adjusting the parameters and uploading the file again.'
+        "
+      ></p>
     </div>
   </div>
 </div>
