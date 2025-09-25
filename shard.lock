@@ -18,5 +18,5 @@ shards:
 
   softepigen:
     git: https://github.com/franciscoadasme/softepigen.git
-    version: 0.1.0+git.commit.052753fefd5fe2c54d0dd1f9524858d725f8a661
+    version: 0.1.0+git.commit.5c0628a4c081b4328f5a65e44a3be48bd8134fc3
 

@@ -183,7 +183,7 @@
 
 <div
   x-data="{
-    amplicons: [],
+    amplicons: 0,
     bed: '',
     bedFile: '',
     chromosome: '',
@@ -208,7 +208,7 @@
     message = '';
   "
   @analysis-failed.window="
-    amplicons = [];
+    amplicons = 0;
     bed = '';
     bedFile = '';
     chromosome = '';
@@ -219,12 +219,12 @@
 >
   <div
     class="min-w-[52rem] mx-5 my-5 bg-white rounded-xl border border-gray-200 p-5"
-    x-show="amplicons.length > 0"
+    x-show="bed.length > 0"
   >
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center">
       <h2
         class="text-2xl font-semibold"
-        x-text="`Found ${amplicons.length} amplicons in ${chromosome}`"
+        x-text="`Found ${amplicons} amplicons in ${chromosome}`"
       ></h2>
       <button
         class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer hover:bg-blue-600"
@@ -233,35 +233,10 @@
         Download BED File
       </button>
     </div>
-    <div
-      class="w-full grid grid-cols-[auto_auto_1fr_auto_auto_auto] gap-x-2 gap-y-1"
-    >
-      <div class="contents font-semibold text-sm">
-        <div class="text-right">Start</div>
-        <div class="text-right">Primer</div>
-        <div class="text-center">Amplicon</div>
-        <div>Primer</div>
-        <div>End</div>
-        <div>Length</div>
-      </div>
-      <template x-for="amplicon in amplicons">
-        <div class="contents font-mono text-sm">
-          <div x-text="new Intl.NumberFormat().format(amplicon.start)"></div>
-          <div
-            class="truncate text-right"
-            x-text="amplicon.primers.forward"
-          ></div>
-          <div class="truncate" x-text="amplicon.sequence"></div>
-          <div class="truncate" x-text="amplicon.primers.reverse"></div>
-          <div x-text="new Intl.NumberFormat().format(amplicon.stop)"></div>
-          <div class="text-right" x-text="amplicon.size"></div>
-        </div>
-      </template>
-    </div>
   </div>
   <div
     class="w-[52rem] mx-auto my-5 p-5 flex gap-5 items-center bg-white border border-gray-200 rounded-xl"
-    x-show="amplicons.length === 0"
+    x-show="bed.length === 0"
   >
     <svg class="size-4 fill-red-500" viewBox="0 0 24 24">
       <path
