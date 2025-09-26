@@ -44,7 +44,7 @@ post "/upload" do |env|
     if status.success?
       bed_content = File.exists?(bed_file) ? File.read(bed_file) : ""
       chromosome = bed_content[/browser position (chr\d+)/, 1]? || "chr??"
-      amplicons = `tail -1 #{bed_file}`[/Neg(\d+)/, 1]? || 0
+      amplicons = io.to_s[/Found (\d+) amplicon/, 1]?.try(&.to_i) || 0
     else
       message = io.to_s.strip
       Log.error { "Softepigen failed: #{message}" }
