@@ -22,13 +22,11 @@ end
 
 get "/download/:slug/bed" do |env|
   slug = env.params.url["slug"]? || halt(env, 400, "Missing slug")
-  bed_path = Path["public/output/#{slug}-out.bed"]
+  bed_path = "public/output/#{slug}-out.bed"
   halt(env, 404, "File not found") unless File.exists?(bed_path)
-  env.response.headers["Content-Type"] = "application/octet-stream"
-  env.response.headers["Content-Disposition"] = "attachment; filename=\"#{slug}-out.bed\""
-  contents = File.read(bed_path)
-  File.delete bed_path
-  contents
+  filename = "#{slug.partition('-').last}-out.bed"
+  env.response.headers["Content-Disposition"] = %{attachment; filename="#{filename}"}
+  send_file env, bed_path, "plain/text"
 end
 
 post "/upload" do |env|
