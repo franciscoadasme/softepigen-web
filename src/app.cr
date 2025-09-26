@@ -31,9 +31,9 @@ end
 
 get "/csv/:slug" do |env|
   slug = env.params.url["slug"]? || halt(env, 400, "Missing slug")
-  path = "public/output/#{slug}-out.csv"
+  path = "public/output/#{slug}-out.zip"
   halt(env, 404, "File not found") unless File.exists?(path)
-  filename = "#{slug.partition('-').last}-out.csv"
+  filename = "#{slug.partition('-').last}-out.zip"
   env.response.headers["Content-Disposition"] = %{attachment; filename="#{filename}"}
   send_file env, path
 end
@@ -63,7 +63,6 @@ post "/upload" do |env|
     stem = File.basename Path[file_upload.filename.not_nil!].stem, ".fasta"
     slug = "#{timestamp}-#{stem}"
     output = "public/output/#{slug}"
-    bed_file = "#{output}-out.bed"
 
     args = [
       "--amplicon=#{amplicon_size.to_s.sub("..", ",")}",
@@ -77,6 +76,8 @@ post "/upload" do |env|
     status = Process.run "./bin/softepigen", args, output: io, error: io
     if status.success?
       amplicons = io.to_s[/Found (\d+) amplicon/, 1]?.try(&.to_i) || 0
+      csv_file = "#{output}-out.csv"
+      `zip -j #{output}-out.zip #{csv_file}` if File.exists?(csv_file)
     else
       message = io.to_s.strip
       Log.error { "Softepigen failed: #{message}" }
