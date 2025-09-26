@@ -9,8 +9,8 @@ COPY ./shard.yml ./shard.lock /app/
 RUN shards install --frozen
 
 COPY ./ /app/
-RUN crystal build --no-debug --release --static -o /app/bin/softepigen /app/lib/softepigen/src/main.cr
-RUN shards build --no-debug --release --static web
+RUN crystal build --no-debug --release -o /app/bin/softepigen /app/lib/softepigen/src/main.cr
+RUN shards build --no-debug --release web
 RUN mkdir -p /app/public/output
 
 COPY ./cron/delete_old_files /etc/cron.d/delete_old_files
