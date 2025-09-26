@@ -205,45 +205,61 @@
   x-show="fetched"
 >
   <div
-    class="min-w-[52rem] mx-5 my-5 bg-white rounded-xl border border-gray-200 p-5"
-    x-show="amplicons > 0"
-  >
-    <div class="flex justify-between items-center">
-      <h2
-        class="text-2xl font-semibold"
-        x-text="`Found ${amplicons} amplicons in ${chromosome}`"
-      ></h2>
-      <a
-        class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer hover:bg-blue-600"
-        :href="`/download/${slug}/bed`"
-      >
-        Download BED File
-      </a>
-    </div>
-  </div>
-  <div
     class="w-[52rem] mx-auto my-5 p-5 flex gap-5 items-center bg-white border border-gray-200 rounded-xl"
-    x-show="amplicons === 0"
   >
-    <svg class="size-4 fill-red-500" viewBox="0 0 24 24">
+    <svg
+      class="size-4 fill-green-500"
+      viewBox="0 0 507.506 507.506"
+      width="24"
+      height="24"
+      x-show="amplicons > 0"
+    >
+      <path
+        d="M163.865,436.934c-14.406,0.006-28.222-5.72-38.4-15.915L9.369,304.966c-12.492-12.496-12.492-32.752,0-45.248l0,0   c12.496-12.492,32.752-12.492,45.248,0l109.248,109.248L452.889,79.942c12.496-12.492,32.752-12.492,45.248,0l0,0   c12.492,12.496,12.492,32.752,0,45.248L202.265,421.019C192.087,431.214,178.271,436.94,163.865,436.934z"
+      />
+    </svg>
+    <svg
+      class="size-4 fill-red-500"
+      viewBox="0 0 24 24"
+      x-show="amplicons === 0"
+    >
       <path
         d="m22.536,8.46L15.537,1.459C14.592.515,13.337-.006,12.001-.006s-2.592.521-3.536,1.465L1.466,8.46c-1.949,1.949-1.949,5.12,0,7.069l6.999,7.001c.944.944,2.2,1.465,3.536,1.465s2.591-.521,3.536-1.465l6.999-7.001c.944-.944,1.464-2.199,1.464-3.534s-.52-2.591-1.464-3.535Zm-1.414,5.655l-6.999,7.001c-1.134,1.133-3.11,1.133-4.244,0l-6.999-7.001c-1.169-1.169-1.169-3.072,0-4.241l6.999-7.001c.567-.566,1.32-.879,2.122-.879s1.555.312,2.122.879l6.999,7.001c.566.566.878,1.319.878,2.121s-.312,1.554-.878,2.12Zm-7.622,2.385c0,.828-.672,1.5-1.5,1.5s-1.5-.672-1.5-1.5.672-1.5,1.5-1.5,1.5.672,1.5,1.5Zm-2.5-4v-5.5c0-.553.448-1,1-1s1,.447,1,1v5.5c0,.553-.448,1-1,1s-1-.447-1-1Z"
       />
     </svg>
 
     <div class="flex-1">
-      <p
-        class="font-semibold text-red-500"
-        x-text="message ? 'Something went wrong' : 'No amplicons found'"
-      ></p>
-      <p
-        class="text-gray-400 text-sm"
-        x-text="
-          message ? `${message}. Please check the input and try again.` :
-          'No amplicons could be found with the given parameters. Please try \
-          adjusting the parameters and uploading the file again.'
-        "
-      ></p>
+      <div x-show="amplicons > 0">
+        <p
+          class="font-semibold text-green-500"
+          x-text="`Found ${amplicons} non-redundant amplicons`"
+        ></p>
+        <p class="text-gray-400 text-sm">
+          Files will be accessible for 1 hour only.
+        </p>
+        <div class="mt-2">
+          <a
+            class="inline-block bg-slate-200 text-slate-700 font-semibold py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer hover:bg-slate-300"
+            :href="`/download/${slug}/bed`"
+          >
+            Download BED File
+          </a>
+        </div>
+      </div>
+      <div x-show="amplicons === 0 && message">
+        <p class="font-semibold text-red-500">Something went wrong</p>
+        <pre x-text="message"></pre>
+        <p class="text-gray-400 text-sm">
+          Please check the input and try again.
+        </p>
+      </div>
+      <div x-show="amplicons === 0 && !message">
+        <p class="font-semibold text-red-500">No amplicons found</p>
+        <p class="text-gray-400 text-sm">
+          No amplicons could be found with the given parameters. Please try
+          adjusting the parameters and uploading the file again.
+        </p>
+      </div>
     </div>
   </div>
 </div>
