@@ -20,13 +20,22 @@ get "/" do
   render "src/views/index.ecr", "src/views/layout.ecr"
 end
 
-get "/download/:slug/bed" do |env|
+get "/bed/:slug" do |env|
   slug = env.params.url["slug"]? || halt(env, 400, "Missing slug")
   bed_path = "public/output/#{slug}-out.bed"
   halt(env, 404, "File not found") unless File.exists?(bed_path)
   filename = "#{slug.partition('-').last}-out.bed"
   env.response.headers["Content-Disposition"] = %{attachment; filename="#{filename}"}
   send_file env, bed_path, "plain/text"
+end
+
+get "/csv/:slug" do |env|
+  slug = env.params.url["slug"]? || halt(env, 400, "Missing slug")
+  path = "public/output/#{slug}-out.csv"
+  halt(env, 404, "File not found") unless File.exists?(path)
+  filename = "#{slug.partition('-').last}-out.csv"
+  env.response.headers["Content-Disposition"] = %{attachment; filename="#{filename}"}
+  send_file env, path
 end
 
 post "/upload" do |env|
