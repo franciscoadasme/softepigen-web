@@ -1,6 +1,21 @@
 require "kemal"
 require "softepigen"
 
+FILE_LIFETIME = 1.hour
+
+def delete_old_files
+  Dir.glob("public/output/*").each do |path|
+    if Time.local - File.info(path).modification_time > FILE_LIFETIME
+      Log.info { "Deleting old file #{path}" }
+      File.delete? path # to avoid exception if file was already deleted
+    end
+  end
+end
+
+before_get do
+  delete_old_files
+end
+
 get "/" do
   render "src/views/index.ecr", "src/views/layout.ecr"
 end
