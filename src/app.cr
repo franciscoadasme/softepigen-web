@@ -5,6 +5,17 @@ get "/" do
   render "src/views/index.ecr", "src/views/layout.ecr"
 end
 
+get "/download/:slug/bed" do |env|
+  slug = env.params.url["slug"]? || halt(env, 400, "Missing slug")
+  bed_path = Path["public/output/#{slug}-out.bed"]
+  halt(env, 404, "File not found") unless File.exists?(bed_path)
+  env.response.headers["Content-Type"] = "application/octet-stream"
+  env.response.headers["Content-Disposition"] = "attachment; filename=\"#{slug}-out.bed\""
+  contents = File.read(bed_path)
+  File.delete bed_path
+  contents
+end
+
 post "/upload" do |env|
   file_upload = env.params.files["fasta"]? || halt(env, 400, "No file uploaded")
   halt(env, 400, "Empty file") unless file_upload.filename.presence
@@ -28,7 +39,8 @@ post "/upload" do |env|
 
     timestamp = Time.local.to_s("%Y%m%d%H%M%S")
     stem = File.basename Path[file_upload.filename.not_nil!].stem, ".fasta"
-    output = "public/output/#{timestamp}-#{stem}"
+    slug = "#{timestamp}-#{stem}"
+    output = "public/output/#{slug}"
     bed_file = "#{output}-out.bed"
 
     args = [
@@ -42,8 +54,6 @@ post "/upload" do |env|
     io = IO::Memory.new
     status = Process.run "./bin/softepigen", args, output: io, error: io
     if status.success?
-      bed_content = File.exists?(bed_file) ? File.read(bed_file) : ""
-      chromosome = bed_content[/browser position (chr\d+)/, 1]? || "chr??"
       amplicons = io.to_s[/Found (\d+) amplicon/, 1]?.try(&.to_i) || 0
     else
       message = io.to_s.strip
@@ -58,8 +68,8 @@ post "/upload" do |env|
   env.response.headers["Content-Type"] = "application/json"
   {
     "amplicons"  => amplicons,
-    "bed"        => bed_content,
-    "chromosome" => chromosome,
+    "chromosome" => "chr??",
+    "slug"       => slug,
   }.to_json
 end
 
