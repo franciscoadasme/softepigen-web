@@ -1,5 +1,4 @@
 require "kemal"
-require "softepigen"
 
 get "/" do
   render "src/views/index.ecr", "src/views/layout.ecr"

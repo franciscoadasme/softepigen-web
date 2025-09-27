@@ -16,7 +16,3 @@ shards:
     git: https://github.com/luislavena/radix.git
     version: 0.4.1
 
-  softepigen:
-    git: https://github.com/franciscoadasme/softepigen.git
-    version: 0.1.0+git.commit.ba8055451e3452f7a477f6f0a648272e86829351
-

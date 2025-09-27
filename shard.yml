@@ -7,13 +7,11 @@ authors:
 dependencies:
   kemal:
     github: kemalcr/kemal
-  softepigen:
-    github: franciscoadasme/softepigen
 
 targets:
   web:
     main: src/app.cr
 
-crystal: '>= 1.15.1'
+crystal: ">= 1.15.1"
 
 license: MIT

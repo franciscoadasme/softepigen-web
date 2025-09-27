@@ -1,7 +1,11 @@
 FROM crystallang/crystal:latest-alpine
-RUN apk add --no-cache dcron zip
+RUN apk add --no-cache dcron zip git
 
 ENV KEMAL_ENV=production
+
+WORKDIR /softepigen/
+RUN git clone https://github.com/franciscoadasme/softepigen .
+RUN shards build --no-debug --release --without-development softepigen
 
 WORKDIR /app/
 
@@ -9,9 +13,9 @@ COPY ./shard.yml ./shard.lock /app/
 RUN shards install --frozen
 
 COPY ./ /app/
-RUN crystal build --no-debug --release -o /app/bin/softepigen /app/lib/softepigen/src/main.cr
 RUN shards build --no-debug --release web
 RUN mkdir -p /app/public/output
+RUN cp /softepigen/bin/softepigen /app/bin/softepigen
 
 COPY ./cron/delete_old_files /etc/cron.d/delete_old_files
 RUN chmod 0744 /app/scripts/delete_old_files.sh \
