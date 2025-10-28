@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\FASTAHelper;
+use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -12,10 +14,22 @@ class JobController extends Controller
         return view('jobs.create');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $validated = $request->validate([
-            'fasta' => 'required|file|mimes:txt,fasta,fa|max:512000', # 500MB
+            'fasta' => [
+                'required',
+                'file',
+                'mimes:txt,fasta,fa',
+                'max:512000', # 500MB
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if (!FASTAHelper::isValid($value)) {
+                        $fail(
+                            'The contents of the file is not valid nucleic FASTA.',
+                        );
+                    }
+                },
+            ],
             'amplicon_size_min' => 'required|integer|min:1',
             'amplicon_size_max' =>
                 'required|integer|min:1|gt:amplicon_size_min',
