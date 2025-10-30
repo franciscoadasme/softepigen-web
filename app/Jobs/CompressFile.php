@@ -2,9 +2,10 @@
 
 namespace App\Jobs;
 
+use App\Enums\JobState;
+use App\Models\JobSubmission;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,27 +13,41 @@ class CompressFile implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public string $path) {}
+    public function __construct(public string $uuid) {}
 
     public function handle(): void
     {
-        if (Storage::missing($this->path)) {
-            $this->fail("File to compress not found: {$this->path}");
+        $path = "jobs/{$this->uuid}/input.fasta";
+
+        if (Storage::missing($path)) {
+            $this->failJob("File to compress not found: {$path}");
         }
 
-        $abspath = Storage::path($this->path);
+        $abspath = Storage::path($path);
         $result = Process::run('gzip -f ' . escapeshellarg($abspath));
 
         if ($result->failed()) {
-            $this->fail(
-                "Something went wrong with the compression: {$this->path}\n{$result->errorOutput()}",
+            $this->failJob(
+                "Something went wrong with the compression: {$path}\n{$result->errorOutput()}",
             );
         }
 
-        if (Storage::missing($this->path . '.gz')) {
-            $this->fail(
-                "Something went wrong with the compression: {$this->path}",
+        if (Storage::missing($path . '.gz')) {
+            $this->failJob(
+                "Something went wrong with the compression: {$path}",
             );
         }
+
+        JobSubmission::where('uuid', $this->uuid)->update([
+            'status' => JobState::Ready,
+        ]);
+    }
+
+    private function failJob(string $message): void
+    {
+        JobSubmission::where('uuid', $this->uuid)->update([
+            'status' => JobState::Failed,
+        ]);
+        $this->fail($message);
     }
 }
