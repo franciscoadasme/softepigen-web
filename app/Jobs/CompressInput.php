@@ -9,7 +9,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Storage;
 
-class CompressFile implements ShouldQueue
+class CompressInput implements ShouldQueue
 {
     use Queueable;
 
