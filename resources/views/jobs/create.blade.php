@@ -113,7 +113,12 @@
                     @enderror
                 </div>
                 <div class="col-span-3">
-                    <input type="checkbox" id="astringent" name="astringent" />
+                    <input
+                        type="checkbox"
+                        id="astringent"
+                        name="astringent"
+                        value="1"
+                    />
                     <label for="astringent">
                         Use astringency for complexity analysis
                     </label>
