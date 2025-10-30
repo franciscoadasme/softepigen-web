@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\CompressFile;
 use App\Helpers\FASTAHelper;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class JobController extends Controller
 {
@@ -39,6 +41,13 @@ class JobController extends Controller
             'cpg_max' => 'required|integer|min:1|gt:cpg_min',
             'astringent' => 'boolean',
         ]);
-        return response('OK', 200);
+
+        $uuid = Str::uuid()->toString();
+        $file = $request->file('fasta');
+        $path = $file->storeAs("jobs/$uuid", 'input.fasta');
+
+        CompressFile::dispatch($path);
+
+        return response($path, 200);
     }
 }
