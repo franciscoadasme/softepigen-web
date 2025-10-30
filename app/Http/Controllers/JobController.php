@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\CompressFile;
+use App\Jobs\CompressInput;
 use App\Helpers\FASTAHelper;
+use App\Models\JobSubmission;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -46,7 +47,27 @@ class JobController extends Controller
         $file = $request->file('fasta');
         $path = $file->storeAs("jobs/$uuid", 'input.fasta');
 
-        CompressFile::dispatch($path);
+        $job = JobSubmission::create([
+            'uuid' => $uuid,
+            'ip' => $request->ip(),
+            'parameters' => [
+                'amplicon_range' => [
+                    (int) $validated['amplicon_size_min'],
+                    (int) $validated['amplicon_size_max'],
+                ],
+                'primer_range' => [
+                    (int) $validated['primer_size_min'],
+                    (int) $validated['primer_size_max'],
+                ],
+                'cpg_range' => [
+                    (int) $validated['cpg_min'],
+                    (int) $validated['cpg_max'],
+                ],
+                'astringent' => ((bool) $validated['astringent']) ?? false,
+            ],
+        ]);
+
+        CompressInput::dispatch($uuid)->withoutDelay();
 
         return response($path, 200);
     }
