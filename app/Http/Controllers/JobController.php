@@ -63,7 +63,7 @@ class JobController extends Controller
                     (int) $validated['cpg_min'],
                     (int) $validated['cpg_max'],
                 ],
-                'astringent' => ((bool) $validated['astringent']) ?? false,
+                'astringent' => (bool) ($validated['astringent'] ?? false),
             ],
         ]);
 
