@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Jobs\CompressInput;
 use App\Helpers\FASTAHelper;
+use App\Jobs\PollJob;
+use App\Jobs\SubmitJob;
 use App\Models\JobSubmission;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Str;
 
 class JobController extends Controller
@@ -67,7 +70,11 @@ class JobController extends Controller
             ],
         ]);
 
-        CompressInput::dispatch($uuid)->withoutDelay();
+        Bus::chain([
+            new CompressInput($uuid),
+            new SubmitJob($uuid),
+            new PollJob($uuid),
+        ])->dispatch();
 
         return response($path, 200);
     }

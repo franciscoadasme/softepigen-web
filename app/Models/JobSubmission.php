@@ -7,7 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class JobSubmission extends Model
 {
-    protected $fillable = ['uuid', 'ip', 'parameters'];
+    protected $fillable = [
+        'ip',
+        'parameters',
+        'slurm_id',
+        'status',
+        'stdout',
+        'uuid',
+    ];
 
     protected $casts = [
         'parameters' => 'array',
