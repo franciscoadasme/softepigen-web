@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreJobSubmissionRequest;
 use App\Jobs\CompressInput;
-use App\Helpers\FASTAHelper;
 use App\Jobs\PollJob;
 use App\Jobs\SubmitJob;
 use App\Models\JobSubmission;
-use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
@@ -20,31 +19,9 @@ class JobController extends Controller
         return view('jobs.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreJobSubmissionRequest $request)
     {
-        $validated = $request->validate([
-            'fasta' => [
-                'required',
-                'file',
-                'mimes:txt,fasta,fa',
-                'max:512000', # 500MB
-                function (string $attribute, mixed $value, Closure $fail) {
-                    if (!FASTAHelper::isValid($value)) {
-                        $fail(
-                            'The contents of the file is not valid nucleic FASTA.',
-                        );
-                    }
-                },
-            ],
-            'amplicon_size_min' => 'required|integer|min:1',
-            'amplicon_size_max' =>
-                'required|integer|min:1|gt:amplicon_size_min',
-            'primer_size_min' => 'required|integer|min:1',
-            'primer_size_max' => 'required|integer|min:1|gt:primer_size_min',
-            'cpg_min' => 'required|integer|min:1',
-            'cpg_max' => 'required|integer|min:1|gt:cpg_min',
-            'astringent' => 'boolean',
-        ]);
+        $validated = $request->validated();
 
         $uuid = Str::uuid()->toString();
         $file = $request->file('fasta');
