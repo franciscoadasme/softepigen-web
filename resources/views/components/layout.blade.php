@@ -15,7 +15,7 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="min-h-screen bg-slate-100 text-slate-900">
+    <body class="bg-slate-100 text-slate-900">
         <div class="mx-auto mt-20 mb-8 w-[52rem] text-center">
             <h1 class="mb-2 text-4xl font-bold md:text-5xl">🧬Softepigen v2</h1>
             <p class="text-lg text-slate-600">
