@@ -20,10 +20,4 @@ class JobSubmission extends Model
         'parameters' => 'array',
         'status' => JobState::class,
     ];
-
-    public function isFinished(): bool
-    {
-        return $this->status === JobState::Completed ||
-            $this->status === JobState::Failed;
-    }
 }

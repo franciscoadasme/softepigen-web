@@ -15,4 +15,12 @@ enum JobState: string
     {
         return array_map(fn($case) => $case->value, self::cases());
     }
+
+    public function finished(): bool
+    {
+        return match ($this) {
+            self::Completed, self::Failed => true,
+            default => false,
+        };
+    }
 }
