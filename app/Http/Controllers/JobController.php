@@ -19,7 +19,12 @@ class JobController extends Controller
         return view('jobs.create');
     }
 
-    public function store(StoreJobSubmissionRequest $request)
+    public function show(JobSubmission $jobSubmission)
+    {
+        return view('jobs.show', ['job' => $jobSubmission]);
+    }
+
+    public function store(StoreJobSubmissionRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -53,6 +58,6 @@ class JobController extends Controller
             new PollJob($uuid),
         ])->dispatch();
 
-        return response($path, 200);
+        return redirect()->route('jobs.show', ['job_submission' => $uuid]);
     }
 }

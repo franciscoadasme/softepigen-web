@@ -20,4 +20,9 @@ class JobSubmission extends Model
         'parameters' => 'array',
         'status' => JobState::class,
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
 }
