@@ -36,7 +36,7 @@
                     <input
                         type="number"
                         name="amplicon_size_min"
-                        value="100"
+                        value="{{ old('amplicon_size_min') ?? 100 }}"
                         min="1"
                         class="w-16 rounded border border-slate-300 px-2 py-1"
                         required
@@ -45,7 +45,7 @@
                     <input
                         type="number"
                         name="amplicon_size_max"
-                        value="150"
+                        value="{{ old('amplicon_size_max') ?? 150 }}"
                         min="1"
                         class="w-16 rounded border border-slate-300 px-2 py-1"
                         required
@@ -63,7 +63,7 @@
                     <input
                         type="number"
                         name="primer_size_min"
-                        value="15"
+                        value="{{ old('primer_size_min') ?? 15 }}"
                         min="1"
                         class="w-16 rounded border border-slate-300 px-2 py-1"
                         required
@@ -72,7 +72,7 @@
                     <input
                         type="number"
                         name="primer_size_max"
-                        value="25"
+                        value="{{ old('primer_size_max') ?? 25 }}"
                         min="1"
                         class="w-16 rounded border border-slate-300 px-2 py-1"
                         required
@@ -90,7 +90,7 @@
                     <input
                         type="number"
                         name="cpg_min"
-                        value="3"
+                        value="{{ old('cpg_min') ?? 3 }}"
                         min="1"
                         class="w-16 rounded border border-slate-300 px-2 py-1"
                         required
@@ -99,7 +99,7 @@
                     <input
                         type="number"
                         name="cpg_max"
-                        value="40"
+                        value="{{ old('cpg_max') ?? 40 }}"
                         min="1"
                         class="w-16 rounded border border-slate-300 px-2 py-1"
                         required
@@ -118,6 +118,7 @@
                         id="astringent"
                         name="astringent"
                         value="1"
+                        @if(old('astringent')) checked @endif
                     />
                     <label for="astringent">
                         Use astringency for complexity analysis
