@@ -16,7 +16,8 @@
             @endif
         </dd>
         <dt class="mb-4">
-            {{ $job->updated_at }}
+            {{ $job->updated_at->diffForHumans() }}
+            <span class="text-slate-400">({{ $job->updated_at }})</span>
         </dt>
     </div>
     <div>
