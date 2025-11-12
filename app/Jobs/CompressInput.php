@@ -47,6 +47,7 @@ class CompressInput implements ShouldQueue
     {
         JobSubmission::where('uuid', $this->uuid)->update([
             'status' => JobState::Failed,
+            'stdout' => $message,
         ]);
         $this->fail($message);
     }
