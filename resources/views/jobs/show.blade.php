@@ -15,7 +15,7 @@
             />
         </x-slot>
 
-        <p class="mt-4 text-center text-sm text-slate-500">
+        <p class="mt-4 text-center text-sm text-slate-400">
             <x-icons.refresh class="mr-1 inline size-3 animate-spin" />
             This page will refresh automatically every
             {{ config('jobsubmission.poll_interval', 30) }} seconds.
