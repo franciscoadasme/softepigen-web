@@ -21,4 +21,13 @@
             {{ config('jobsubmission.poll_interval', 30) }} seconds.
         </p>
     @endunless
+
+    <div class="mt-5 text-center">
+        <a
+            href="{{ route('jobs.create') }}"
+            class="text-slate-500 hover:text-blue-500 active:text-blue-600"
+        >
+            &larr; Back to home
+        </a>
+    </div>
 </x-layout>
