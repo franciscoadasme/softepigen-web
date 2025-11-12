@@ -131,10 +131,10 @@
             >
                 Analyze
             </button>
-            <p class="text-center text-sm text-slate-400">
-                A job will be submitted to the queue. You'll be redirected to
-                the job status page.
-            </p>
         </form>
     </div>
+    <p class="mt-4 text-center text-sm text-slate-400">
+        A job will be submitted to the queue. You'll be redirected to the job
+        status page.
+    </p>
 </x-layout>
