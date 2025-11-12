@@ -16,7 +16,11 @@ class JobController extends Controller
 {
     public function create()
     {
-        return view('jobs.create');
+        return view('jobs.create', [
+            'jobs' => JobSubmission::where('ip', request()->ip())
+                ->latest()
+                ->get(),
+        ]);
     }
 
     public function show(JobSubmission $jobSubmission)
@@ -34,7 +38,7 @@ class JobController extends Controller
 
         $job = JobSubmission::create([
             'uuid' => $uuid,
-'name' => $file->getClientOriginalName(),
+            'name' => $file->getClientOriginalName(),
             'ip' => $request->ip(),
             'parameters' => [
                 'amplicon_range' => [

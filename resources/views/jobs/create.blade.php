@@ -137,4 +137,8 @@
         A job will be submitted to the queue. You'll be redirected to the job
         status page.
     </p>
+
+    @if ($jobs->isNotEmpty())
+        <x-jobs.list :$jobs />
+    @endif
 </x-layout>
