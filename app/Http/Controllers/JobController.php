@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreJobSubmissionRequest;
-use App\Jobs\CompressInput;
+use App\Jobs\CompressInputJob;
 use App\Jobs\PollJob;
 use App\Jobs\SubmitJob;
 use App\Models\JobSubmission;
@@ -58,7 +58,7 @@ class JobController extends Controller
         ]);
 
         Bus::chain([
-            new CompressInput($uuid),
+            new CompressInputJob($uuid),
             new SubmitJob($uuid),
             new PollJob($uuid),
         ])->dispatch();

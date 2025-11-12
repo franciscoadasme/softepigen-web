@@ -8,7 +8,7 @@ use App\Models\JobSubmission;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
-class CompressInput implements ShouldQueue
+class CompressInputJob implements ShouldQueue
 {
     use Queueable;
 
