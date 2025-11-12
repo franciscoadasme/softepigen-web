@@ -19,18 +19,20 @@ class PollJob implements ShouldQueue
     {
         $sub = JobSubmission::where('uuid', $this->uuid)->firstOrFail();
         $status = $service->status($sub);
-        $stderr = null;
-
-        if ($status === JobState::Failed) {
-            $stderr = Storage::get("jobs/{$sub->uuid}/stderr");
-        }
-
-        if ($status !== $sub->status) {
-            $sub->update(['status' => $status, 'stdout' => $stderr]);
-        }
-
-        if (!in_array($status, [JobState::Completed, JobState::Failed])) {
-            $this->requeue();
+        switch ($status) {
+            case JobState::Completed:
+                CompressOutputJob::dispatch($this->uuid)->withoutDelay();
+                break;
+            case JobState::Failed:
+                $stderr = Storage::get("jobs/{$sub->uuid}/stderr");
+                $sub->update(['status' => $status, 'stdout' => $stderr]);
+                break;
+            default:
+                if ($status !== $sub->status) {
+                    $sub->update(['status' => $status]);
+                }
+                $this->requeue();
+                break;
         }
     }
 
