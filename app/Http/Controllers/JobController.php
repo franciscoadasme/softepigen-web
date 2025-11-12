@@ -34,6 +34,7 @@ class JobController extends Controller
 
         $job = JobSubmission::create([
             'uuid' => $uuid,
+'name' => $file->getClientOriginalName(),
             'ip' => $request->ip(),
             'parameters' => [
                 'amplicon_range' => [

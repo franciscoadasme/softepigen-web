@@ -13,6 +13,7 @@ return new class extends Migration {
     {
         Schema::create('job_submissions', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('uuid')->unique();
             $table->string('ip', 64)->index();
             $table->json('parameters')->nullable();

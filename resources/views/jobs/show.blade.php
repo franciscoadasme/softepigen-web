@@ -3,7 +3,7 @@
         class="mx-auto w-[52rem] rounded-xl border border-slate-200 bg-white p-5"
     >
         <x-jobs.status-indicator :$job class="my-10 text-center" />
-        <h2 class="mb-5 text-2xl font-semibold">Job {{ $job->uuid }}</h2>
+        <h2 class="mb-5 text-2xl font-semibold">{{ $job->name }}</h2>
         <x-jobs.parameters :$job />
     </div>
 

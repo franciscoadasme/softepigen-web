@@ -9,6 +9,7 @@ class JobSubmission extends Model
 {
     protected $fillable = [
         'ip',
+        'name',
         'parameters',
         'slurm_id',
         'status',
