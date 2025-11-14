@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('uuid')->unique();
             $table->string('ip', 64)->index();
             $table->json('parameters')->nullable();
-            $table->string('slurm_id')->index()->nullable();
+            $table->string('jobid')->index()->nullable();
             $table
                 ->enum('status', JobState::values())
                 ->default(JobState::Started->value)

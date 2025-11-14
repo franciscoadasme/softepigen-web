@@ -12,7 +12,7 @@ class JobSubmission extends Model
         'ip',
         'name',
         'parameters',
-        'slurm_id',
+        'jobid',
         'status',
         'stdout',
         'uuid',

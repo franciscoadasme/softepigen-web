@@ -11,7 +11,7 @@ class BashService implements JobSubmissionService
 {
     public function status(JobSubmission $job): JobState
     {
-        if (posix_kill($job->slurm_id, 0)) {
+        if (posix_kill($job->jobid, 0)) {
             return JobState::Running;
         } elseif (Storage::size("jobs/{$job->uuid}/stderr") > 0) {
             return JobState::Failed;

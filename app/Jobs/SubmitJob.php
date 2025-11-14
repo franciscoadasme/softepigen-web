@@ -20,6 +20,6 @@ class SubmitJob implements ShouldQueue
         $service->writeScript($sub);
         $jobId = $service->submit($sub);
 
-        $sub->update(['status' => JobState::Running, 'slurm_id' => $jobId]);
+        $sub->update(['status' => JobState::Running, 'jobid' => $jobId]);
     }
 }
