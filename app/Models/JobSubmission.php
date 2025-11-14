@@ -25,7 +25,7 @@ class JobSubmission extends Model
 
     public function expirationTime(): \Carbon\Carbon
     {
-        return $this->updated_at->addHours(24);
+        return $this->updated_at->addHours(config('jobsubmission.retention'));
     }
 
     public function expired(): bool

@@ -33,7 +33,9 @@
                         colspan="3"
                     >
                         Jobs are available for
-                        <strong>24 hours</strong>
+                        <strong>
+                            {{ config('jobsubmission.retention') }} hours
+                        </strong>
                         after completion and then deleted.
                     </td>
                 </tr>
