@@ -22,12 +22,15 @@
 
         <x-jobs.parameters :$job />
 
-        @if ($job->status == \App\Enums\JobState::Completed)
+        @if ($job->status->finished())
             <p
                 class="small-caps mt-1 mb-2 text-sm font-semibold text-slate-400"
             >
-                Download output
+                Output
             </p>
+        @endif
+
+        @if ($job->status->completed())
             <div class="inline-flex gap-2">
                 @foreach (['bed', 'csv'] as $filetype)
                     <a
@@ -47,6 +50,8 @@
                     </a>
                 @endforeach
             </div>
+        @elseif ($job->status->failed())
+            <pre class="rounded-lg bg-slate-100 p-5">{{ $job->stdout }}</pre>
         @endif
     </x-card>
 
