@@ -31,6 +31,18 @@ class JobSubmission extends Model
         $query->whereIn(
             'status',
             array_map(fn($case) => $case->value, JobState::active()),
+);
+    }
+
+    #[Scope]
+    protected function expired(Builder $query): void
+    {
+        $query->whereNot
+            ->active()
+            ->where(
+                'updated_at',
+                '<=',
+                now()->subHours((int) config('jobsubmission.retention')),
         );
     }
 
