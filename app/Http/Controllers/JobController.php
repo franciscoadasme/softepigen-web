@@ -24,15 +24,8 @@ class JobController extends Controller
         ]);
     }
 
-    public function download(
-        Request $request,
-        JobSubmission $jobSubmission,
-        string $filetype,
-    ) {
-        if ($jobSubmission->ip !== $request->ip()) {
-            abort(403, 'Forbidden access to job.');
-        }
-
+    public function download(JobSubmission $jobSubmission, string $filetype)
+    {
         $path = "jobs/{$jobSubmission->uuid}/output-out.{$filetype}.gz";
         return response()->streamDownload(
             function () use ($path) {
@@ -47,11 +40,8 @@ class JobController extends Controller
         );
     }
 
-    public function show(Request $request, JobSubmission $jobSubmission)
+    public function show(JobSubmission $jobSubmission)
     {
-        if ($jobSubmission->ip !== $request->ip()) {
-            abort(403, 'Forbidden access to job.');
-        }
         return view('jobs.show', ['job' => $jobSubmission]);
     }
 
