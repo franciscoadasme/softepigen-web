@@ -6,6 +6,14 @@
             job status page.
         </x-slot>
 
+        @error('limit')
+            <p
+                class="-mt-3 mb-3 rounded-r-md border-l-3 border-l-red-500 bg-red-50 px-5 py-1 text-sm font-semibold text-red-500"
+            >
+                {{ $message }}
+            </p>
+        @enderror
+
         <form
             method="POST"
             action="{{ route('jobs.store') }}"

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ActiveJobsLimit;
 use App\Http\Middleware\AuthorizeByIp;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -14,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'auth.ip' => AuthorizeByIp::class,
+            'limit.jobs' => ActiveJobsLimit::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

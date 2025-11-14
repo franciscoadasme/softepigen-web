@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(JobController::class)->group(function () {
     Route::get('/', 'create')->name('jobs.create');
-    Route::middleware(['throttle:job-submissions'])->group(function () {
-        Route::post('/submit', 'store')->name('jobs.store');
-    });
+    Route::middleware(['throttle:job-submissions', 'limit.jobs'])->group(
+        function () {
+            Route::post('/submit', 'store')->name('jobs.store');
+        },
+    );
     Route::middleware('auth.ip')->group(function () {
         Route::get('/jobs/{job_submission}', 'show')->name('jobs.show');
         Route::get('/jobs/{job_submission}/download/{filetype}', 'download')
