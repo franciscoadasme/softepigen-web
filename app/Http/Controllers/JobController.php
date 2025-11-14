@@ -23,8 +23,11 @@ class JobController extends Controller
         ]);
     }
 
-    public function show(JobSubmission $jobSubmission)
+    public function show(Request $request, JobSubmission $jobSubmission)
     {
+        if ($jobSubmission->ip !== $request->ip()) {
+            abort(403, 'Forbidden access to job.');
+        }
         return view('jobs.show', ['job' => $jobSubmission]);
     }
 
