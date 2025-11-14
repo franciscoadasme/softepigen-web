@@ -1,9 +1,10 @@
 <x-layout>
-    <div
-        class="mx-auto w-[52rem] rounded-xl border border-slate-200 bg-white p-5"
-    >
-        <x-jobs.status-indicator :$job class="my-10 text-center" />
-        <h2 class="mb-5 text-2xl font-semibold">{{ $job->name }}</h2>
+    <x-card>
+        <x-slot:title>{{ $job->name }}</x-slot>
+        <x-slot:header>
+            <x-jobs.status-indicator :$job class="my-10 text-center" />
+        </x-slot>
+
         <x-jobs.parameters :$job />
 
         @if ($job->status == \App\Enums\JobState::Completed)
@@ -31,7 +32,7 @@
                     </a>
                 @endforeach
             </div>
-            <p class="mt-4 text-center text-sm text-slate-400" colspan="3">
+            <x-slot:footer>
                 @if ($job->expired())
                     Job has expired and will be
                     <strong>deleted soon</strong>
@@ -43,9 +44,9 @@
                     </strong>
                     and then deleted.
                 @endif
-            </p>
+            </x-slot>
         @endif
-    </div>
+    </x-card>
 
     @unless ($job->status->finished())
         <x-slot:meta>

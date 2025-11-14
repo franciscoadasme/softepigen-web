@@ -1,7 +1,5 @@
-<div
-    class="mx-auto my-10 w-[52rem] rounded-xl border border-slate-200 bg-white p-5"
->
-    <h2 class="mb-6 text-2xl font-semibold">Active Jobs</h2>
+<x-card {{ $attributes }}>
+    <x-slot:title>Active Jobs</x-slot>
     <div class="-mx-5">
         <table class="min-w-full">
             <thead class="border-b border-slate-200">
@@ -26,20 +24,11 @@
             <tbody class="divide-y divide-slate-200">
                 @each('components.jobs.list-item', $jobs, 'job')
             </tbody>
-            <tfoot>
-                <tr>
-                    <td
-                        class="mt-4 pt-3 text-center text-sm text-slate-400"
-                        colspan="3"
-                    >
-                        Jobs are available for
-                        <strong>
-                            {{ config('jobsubmission.retention') }} hours
-                        </strong>
-                        after completion and then deleted.
-                    </td>
-                </tr>
-            </tfoot>
         </table>
     </div>
-</div>
+    <x-slot:footer>
+        Jobs are available for
+        <strong>{{ config('jobsubmission.retention') }} hours</strong>
+        after completion and then deleted.
+    </x-slot>
+</x-card>

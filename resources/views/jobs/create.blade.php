@@ -1,8 +1,11 @@
 <x-layout>
-    <div
-        class="mx-auto w-[52rem] rounded-xl border border-slate-200 bg-white p-5"
-    >
-        <h2 class="mb-6 text-2xl font-semibold">Upload FASTA file</h2>
+    <x-card class="mb-10">
+        <x-slot:title>Upload FASTA file</x-slot>
+        <x-slot:footer>
+            A job will be submitted to the queue. You'll be redirected to the
+            job status page.
+        </x-slot>
+
         <form
             method="POST"
             action="{{ route('jobs.store') }}"
@@ -132,13 +135,9 @@
                 Analyze
             </button>
         </form>
-    </div>
-    <p class="mt-4 text-center text-sm text-slate-400">
-        A job will be submitted to the queue. You'll be redirected to the job
-        status page.
-    </p>
+    </x-card>
 
     @if ($jobs->isNotEmpty())
-        <x-jobs.list :$jobs />
+        <x-jobs.list :$jobs class="mb-10" />
     @endif
 </x-layout>
