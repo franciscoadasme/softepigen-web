@@ -11,6 +11,11 @@ enum JobState: string
     case Running = 'running';
     case Started = 'started';
 
+    public static function active(): array
+    {
+        return array_filter(self::cases(), fn($case) => !$case->finished());
+    }
+
     public static function values(): array
     {
         return array_map(fn($case) => $case->value, self::cases());
