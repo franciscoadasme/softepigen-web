@@ -39,7 +39,7 @@ class JobSubmission extends Model
         return $this->updated_at->addHours(config('jobsubmission.retention'));
     }
 
-    public function expired(): bool
+    public function hasExpired(): bool
     {
         return $this->status->finished() &&
             now()->greaterThan($this->expirationTime());
@@ -52,7 +52,7 @@ class JobSubmission extends Model
 
     public function remainingAccessTime(): CarbonInterval
     {
-        if ($this->expired()) {
+        if ($this->hasExpired()) {
             return CarbonInterval::seconds(0);
         }
         return $this->expirationTime()->diff();
