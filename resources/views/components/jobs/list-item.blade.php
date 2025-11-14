@@ -1,11 +1,8 @@
 <tr>
     <td class="py-3 pl-5">
-        <a
-            href="{{ route('jobs.show', $job->uuid) }}"
-            class="inline-block hover:text-blue-500 hover:underline active:text-blue-600"
-        >
+        <x-link href="{{ route('jobs.show', $job->uuid) }}">
             {{ $job->name }}
-        </a>
+        </x-link>
         <small class="text-slate-400">({{ $job->uuid }})</small>
     </td>
     <td class="px-3 py-3">

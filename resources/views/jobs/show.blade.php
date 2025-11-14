@@ -64,11 +64,8 @@
     @endunless
 
     <div class="mt-5 text-center">
-        <a
-            href="{{ route('jobs.create') }}"
-            class="text-slate-500 hover:text-blue-500 hover:underline active:text-blue-600"
-        >
+        <x-link href="{{ route('jobs.create') }}" class="text-slate-500">
             &larr; Back to home
-        </a>
+        </x-link>
     </div>
 </x-layout>
