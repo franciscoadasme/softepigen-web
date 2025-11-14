@@ -7,9 +7,13 @@ use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Prunable;
+use Illuminate\Support\Facades\Storage;
 
 class JobSubmission extends Model
 {
+    use Prunable;
+
     protected $fillable = [
         'ip',
         'name',
@@ -31,7 +35,7 @@ class JobSubmission extends Model
         $query->whereIn(
             'status',
             array_map(fn($case) => $case->value, JobState::active()),
-);
+        );
     }
 
     #[Scope]
@@ -43,7 +47,7 @@ class JobSubmission extends Model
                 'updated_at',
                 '<=',
                 now()->subHours((int) config('jobsubmission.retention')),
-        );
+            );
     }
 
     public function expirationTime(): \Carbon\Carbon
@@ -60,6 +64,22 @@ class JobSubmission extends Model
     public function getRouteKeyName(): string
     {
         return 'uuid';
+    }
+
+    /**
+     * Get the prunable model query.
+     */
+    public function prunable(): Builder
+    {
+        return static::query()->expired();
+    }
+
+    /**
+     * Prepare the model for pruning.
+     */
+    protected function pruning(): void
+    {
+        Storage::deleteDirectory("jobs/{$this->uuid}");
     }
 
     public function remainingAccessTime(): CarbonInterval
