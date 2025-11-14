@@ -4,6 +4,21 @@
         <x-slot:header>
             <x-jobs.status-indicator :$job class="my-10 text-center" />
         </x-slot>
+        @if ($job->status->finished())
+            <x-slot:footer>
+                @if ($job->expired())
+                    Job has expired and will be
+                    <strong>deleted soon</strong>
+                    &ZeroWidthSpace;.
+                @else
+                    Job will be available only for
+                    <strong>
+                        {{ $job->remainingAccessTime()->forHumans(['parts' => 1]) }}
+                    </strong>
+                    and then deleted.
+                @endif
+            </x-slot>
+        @endif
 
         <x-jobs.parameters :$job />
 
@@ -32,19 +47,6 @@
                     </a>
                 @endforeach
             </div>
-            <x-slot:footer>
-                @if ($job->expired())
-                    Job has expired and will be
-                    <strong>deleted soon</strong>
-                    &ZeroWidthSpace;.
-                @else
-                    Job will be available only for
-                    <strong>
-                        {{ $job->remainingAccessTime()->forHumans(['parts' => 1]) }}
-                    </strong>
-                    and then deleted.
-                @endif
-            </x-slot>
         @endif
     </x-card>
 
