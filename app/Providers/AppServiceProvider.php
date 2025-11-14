@@ -5,7 +5,10 @@ namespace App\Providers;
 use App\Contracts\JobSubmissionService;
 use App\Services\BashService;
 use App\Services\SlurmService;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,6 +37,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        RateLimiter::for('job-submissions', function (Request $request) {
+            return Limit::perMinute(config('jobsubmission.limit'))->by(
+                $request->ip(),
+            );
+        });
     }
 }
