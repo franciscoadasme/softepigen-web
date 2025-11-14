@@ -31,6 +31,19 @@
                     </a>
                 @endforeach
             </div>
+            <p class="mt-4 text-center text-sm text-slate-400" colspan="3">
+                @if ($job->expired())
+                    Job has expired and will be
+                    <strong>deleted soon</strong>
+                    &ZeroWidthSpace;.
+                @else
+                    Job will be available only for
+                    <strong>
+                        {{ $job->remainingAccessTime()->forHumans(['parts' => 1]) }}
+                    </strong>
+                    and then deleted.
+                @endif
+            </p>
         @endif
     </div>
 
