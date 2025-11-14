@@ -10,6 +10,7 @@ use App\Models\JobSubmission;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class JobController extends Controller
@@ -21,6 +22,29 @@ class JobController extends Controller
                 ->latest()
                 ->get(),
         ]);
+    }
+
+    public function download(
+        Request $request,
+        JobSubmission $jobSubmission,
+        string $filetype,
+    ) {
+        if ($jobSubmission->ip !== $request->ip()) {
+            abort(403, 'Forbidden access to job.');
+        }
+
+        $path = "jobs/{$jobSubmission->uuid}/output-out.{$filetype}.gz";
+        return response()->streamDownload(
+            function () use ($path) {
+                $gz = gzopen(Storage::path($path), 'rb');
+                while (!gzeof($gz)) {
+                    echo gzread($gz, 8192);
+                }
+                gzclose($gz);
+            },
+            basename($jobSubmission->name, '.fasta') . "-out.{$filetype}",
+            ['Content-Type' => 'text/plain'],
+        );
     }
 
     public function show(Request $request, JobSubmission $jobSubmission)
