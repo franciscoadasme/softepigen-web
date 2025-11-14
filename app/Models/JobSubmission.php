@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Enums\JobState;
 use Carbon\CarbonInterval;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class JobSubmission extends Model
@@ -22,6 +24,15 @@ class JobSubmission extends Model
         'parameters' => 'array',
         'status' => JobState::class,
     ];
+
+    #[Scope]
+    protected function active(Builder $query): void
+    {
+        $query->whereIn(
+            'status',
+            array_map(fn($case) => $case->value, JobState::active()),
+        );
+    }
 
     public function expirationTime(): \Carbon\Carbon
     {
