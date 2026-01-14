@@ -6,7 +6,7 @@
         </x-slot>
         @if ($job->status->finished())
             <x-slot:footer>
-                @if ($job->expired())
+                @if ($job->hasExpired())
                     Job has expired and will be
                     <strong>deleted soon</strong>
                     &ZeroWidthSpace;.
