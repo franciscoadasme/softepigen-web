@@ -28,7 +28,7 @@
                     type="file"
                     name="fasta"
                     accept=".fasta,.fa,.fas,.txt"
-                    class="block w-full text-center transition-colors duration-200 file:mr-4 file:rounded-full file:border-0 file:bg-blue-500 file:px-4 file:py-2 file:font-semibold file:text-white hover:file:bg-blue-600"
+                    class="block w-full text-center transition-colors duration-200 file:mr-4 file:rounded-full file:border-0 file:bg-slate-900 file:px-4 file:py-2 file:font-semibold file:text-white hover:file:bg-slate-800"
                     required
                 />
                 <p class="mt-2 text-sm text-slate-500">
@@ -138,7 +138,7 @@
             </div>
             <button
                 type="submit"
-                class="w-full rounded-lg bg-blue-500 px-6 py-3 font-semibold text-white shadow-md transition-colors duration-200 hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-500 disabled:opacity-70"
+                class="w-full rounded-lg bg-slate-900 px-6 py-3 font-semibold text-white shadow-md transition-colors duration-200 hover:bg-slate-800 active:translate-y-0.5 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:opacity-70"
             >
                 Analyze
             </button>

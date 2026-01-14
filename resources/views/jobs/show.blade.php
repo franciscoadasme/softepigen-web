@@ -40,11 +40,11 @@
                                 'filetype' => $filetype,
                             ])
                         }}"
-                        class="inline-flex size-20 flex-col items-center justify-center rounded-lg bg-slate-200 px-6 py-3 hover:bg-slate-300 active:bg-slate-400"
+                        class="inline-flex size-20 flex-col items-center justify-center rounded-lg bg-slate-900 px-6 py-3 text-slate-50 hover:bg-slate-800 active:translate-y-0.5"
                     >
                         <x-dynamic-component
                             :component="'icons.file-' . $filetype "
-                            class="size-6 fill-blue-600"
+                            class="size-6 fill-current"
                         />
                         .{{ $filetype }}
                     </a>
