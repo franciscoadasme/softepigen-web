@@ -41,8 +41,8 @@ class JobSubmission extends Model
     #[Scope]
     protected function expired(Builder $query): void
     {
-        $query->whereNot
-            ->active()
+        $query
+            ->finished()
             ->where(
                 'updated_at',
                 '<=',
@@ -53,6 +53,14 @@ class JobSubmission extends Model
     public function expirationTime(): \Carbon\Carbon
     {
         return $this->updated_at->addHours(config('jobsubmission.retention'));
+    }
+
+    #[Scope]
+    protected function finished(Builder $query): void
+    {
+        $query->whereNot(function (Builder $query) {
+            $query->active();
+        });
     }
 
     public function hasExpired(): bool
