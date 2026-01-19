@@ -6,7 +6,7 @@ services:
     ports:
       - '127.0.0.1:${PORT:-18000}:8080'
     volumes:
-      - ./.env:/var/www/html/.env:ro
+      - ./.env:/var/www/html/.env:ro,U
       - ./storage:/var/www/html/storage:z,U
       - ./database:/var/www/html/database:z,U
     restart: unless-stopped
@@ -16,7 +16,7 @@ services:
     command:
       ['php', 'artisan', 'queue:work', '--sleep=3', '--tries=3', '--timeout=90']
     volumes:
-      - ./.env:/var/www/html/.env:ro
+      - ./.env:/var/www/html/.env:ro,U
       - ./storage:/var/www/html/storage:z,U
       - ./database:/var/www/html/database:z,U
     restart: unless-stopped
@@ -25,7 +25,7 @@ services:
     image: '${APP_IMAGE:-localhost/softepigen:latest}'
     command: ['php', 'artisan', 'schedule:work']
     volumes:
-      - ./.env:/var/www/html/.env:ro
+      - ./.env:/var/www/html/.env:ro,U
       - ./storage:/var/www/html/storage:z,U
       - ./database:/var/www/html/database:z,U
     restart: unless-stopped
