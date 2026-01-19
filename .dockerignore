@@ -1,8 +1,15 @@
+.bashrc
+.bash_history
+.bash_profile
+.config
 .env
 .git
 .gitignore
+.local
+.ssh
 bootstrap/cache
 database/database.sqlite
 node_modules
 public/build
 storage
+vendor
