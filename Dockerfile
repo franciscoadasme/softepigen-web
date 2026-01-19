@@ -21,9 +21,6 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY vite.config.* ./
-COPY postcss.config.* ./
-COPY tailwind.config.* ./
-COPY tsconfig*.json ./
 COPY resources/ resources/
 COPY public/ public/
 
