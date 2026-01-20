@@ -15,10 +15,24 @@ class PollJob implements ShouldQueue
 
     public function __construct(public string $uuid) {}
 
+    private function failJob(string $message): void
+    {
+        JobSubmission::where('uuid', $this->uuid)->update([
+            'status' => JobState::Failed,
+            'stdout' => $message,
+        ]);
+        $this->fail($message);
+    }
+
     public function handle(JobSubmissionService $service): void
     {
         $sub = JobSubmission::where('uuid', $this->uuid)->firstOrFail();
-        $status = $service->status($sub);
+        try {
+            $status = $service->status($sub);
+        } catch (\Throwable $th) {
+            $this->failJob($th->getMessage());
+            return;
+        }
         switch ($status) {
             case JobState::Completed:
                 CompressOutputJob::dispatch($this->uuid)->withoutDelay();
