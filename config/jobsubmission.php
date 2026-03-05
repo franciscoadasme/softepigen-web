@@ -7,4 +7,14 @@ return [
     'poll_interval' => (int) env('JOB_SUBMISSION_POLL_INTERVAL', 30), # seconds
     'retention' => (int) env('JOB_SUBMISSION_RETENTION', 24), # hours
     'slurm_partition' => env('JOB_SUBMISSION_QUEUE', 'normal'),
+    'proxy' => env(
+        'JOB_SUBMISSION_PROXY',
+        'http://host.containers.internal:9393',
+    ),
+    'token' => env('JOB_SUBMISSION_TOKEN'),
+    'user' => env('JOB_SUBMISSION_USER', 'softepigen'),
+    'spool' => env(
+        'JOB_SUBMISSION_SPOOL',
+        '/opt/www/softepigen/storage/app/private/',
+    ),
 ];

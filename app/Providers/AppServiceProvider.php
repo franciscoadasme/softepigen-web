@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Contracts\JobSubmissionService;
 use App\Services\BashService;
+use App\Services\SlurmProxyService;
 use App\Services\SlurmService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
@@ -25,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
             return match ($driver) {
                 'bash' => $app->make(BashService::class),
                 'slurm' => $app->make(SlurmService::class),
+                'proxy' => $app->make(SlurmProxyService::class),
                 default => throw new \InvalidArgumentException(
                     "Unknown job submission driver [$driver]",
                 ),
