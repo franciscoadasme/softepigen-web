@@ -47,11 +47,13 @@ class SlurmProxyService implements JobSubmissionService
     public function submit(JobSubmission $job): int
     {
         $url = rtrim(config('jobsubmission.proxy'), '/') . '/submit';
+        $workdir =
+            rtrim(config('jobsubmission.spool'), '/') . "/jobs/{$job->uuid}";
 
         $response = Http::timeout(30)
             ->withHeaders($this->authHeaders())
             ->post($url, [
-                'workdir' => "jobs/{$job->uuid}",
+                'workdir' => $workdir,
                 'script' => 'softepigen.slurm',
             ]);
 
