@@ -55,7 +55,6 @@ class SlurmProxyService implements JobSubmissionService
             ->post($url, [
                 'workdir' => $workdir,
                 'script' => 'softepigen.slurm',
-                'user' => config('jobsubmission.user'),
             ]);
 
         if ($response->failed()) {
