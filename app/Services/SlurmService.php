@@ -84,6 +84,14 @@ class SlurmService implements JobSubmissionService
         set -euo pipefail
 
         cd $workdir
+        BASH;
+
+        if (!empty(config('jobsubmission.modules'))) {
+            $contents .=
+                "\nmodule load " . config('jobsubmission.modules') . "\n";
+        }
+
+        $contents .= <<<BASH
         "$bin" \
             --amplicon={$params['amplicon_range'][0]},{$params['amplicon_range'][1]} \
             --primer={$params['primer_range'][0]},{$params['primer_range'][1]} \
