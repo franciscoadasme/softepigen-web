@@ -1,0 +1,15 @@
+[Unit]
+Description=softepigen (podman-compose)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+EnvironmentFile=/opt/www/softepigen/.env.compose
+WorkingDirectory=/opt/www/softepigen
+ExecStart=/usr/bin/podman-compose -f compose.yml up -d --build
+ExecStop=/usr/bin/podman-compose -f compose.yml down
+
+[Install]
+WantedBy=multi-user.target
