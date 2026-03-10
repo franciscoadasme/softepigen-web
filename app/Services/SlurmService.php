@@ -83,7 +83,7 @@ class SlurmService implements JobSubmissionService
 
         set -euo pipefail
 
-        cd $workdir
+        cd \$SLURM_SUBMIT_DIR
         BASH;
 
         if (!empty(config('jobsubmission.modules'))) {
