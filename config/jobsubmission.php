@@ -14,8 +14,5 @@ return [
         'http://host.containers.internal:9393',
     ),
     'token' => env('JOB_SUBMISSION_TOKEN'),
-    'spool' => env(
-        'JOB_SUBMISSION_SPOOL',
-        '/opt/www/softepigen/storage/app/private/',
-    ),
+    'spool' => env('JOB_SUBMISSION_SPOOL', '/data/softepigen/'),
 ];

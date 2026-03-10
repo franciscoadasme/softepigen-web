@@ -18,7 +18,8 @@ class CompressOutputJob implements ShouldQueue
 
     public function handle(): void
     {
-        $output = Storage::read("jobs/{$this->uuid}/stdout");
+        $disk = Storage::disk('jobs');
+        $output = $disk->get("{$this->uuid}/stdout");
         if (Str::contains($output, 'No amplicons found')) {
             JobSubmission::where('uuid', $this->uuid)->update([
                 'status' => JobState::Failed,
@@ -27,10 +28,10 @@ class CompressOutputJob implements ShouldQueue
             return;
         }
 
-        $prefix = "jobs/{$this->uuid}/output-out";
+        $prefix = "{$this->uuid}/output-out";
         foreach (['.bed', '.csv'] as $ext) {
             try {
-                StorageHelper::compress($prefix . $ext);
+                StorageHelper::compress($disk->path($prefix . $ext));
             } catch (\RuntimeException $e) {
                 $this->failJob($e->getMessage());
                 return;

@@ -36,7 +36,7 @@ class SlurmProxyService implements JobSubmissionService
             case 'COMPLETED':
                 return JobState::Completed;
             default:
-                if (Storage::size("jobs/{$job->uuid}/stderr") > 0) {
+                if (Storage::disk('jobs')->size("{$job->uuid}/stderr") > 0) {
                     return JobState::Failed;
                 } else {
                     return JobState::Completed;

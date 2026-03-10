@@ -13,7 +13,7 @@ class BashService implements JobSubmissionService
     {
         if (posix_kill($job->jobid, 0)) {
             return JobState::Running;
-        } elseif (Storage::size("jobs/{$job->uuid}/stderr") > 0) {
+        } elseif (Storage::disk('jobs')->size("{$job->uuid}/stderr") > 0) {
             return JobState::Failed;
         } else {
             return JobState::Completed;
@@ -22,14 +22,15 @@ class BashService implements JobSubmissionService
 
     public function submit(JobSubmission $job): int
     {
-        $workdir = escapeshellarg(Storage::path("jobs/{$job->uuid}"));
+        $workdir = escapeshellarg(Storage::disk('jobs')->path("{$job->uuid}"));
         $cmd = "cd $workdir && nohup bash run.sh >stdout 2>stderr & echo $!";
         return (int) trim(shell_exec($cmd));
     }
 
     public function writeScript(JobSubmission $job): string
     {
-        $workdir = Storage::path("jobs/{$job->uuid}");
+        $bin = config('jobsubmission.bin');
+        $workdir = Storage::disk('jobs')->path("{$job->uuid}");
         $params = $job->parameters;
         $astringency = $params['astringent'] ? 1 : 0;
 
@@ -48,6 +49,6 @@ class BashService implements JobSubmissionService
         rm -f input.fasta.gz
         BASH;
 
-        return Storage::put("jobs/{$job->uuid}/run.sh", $contents);
+        return Storage::disk('jobs')->put("{$job->uuid}/run.sh", $contents);
     }
 }

@@ -60,6 +60,16 @@ return [
             'report' => false,
         ],
 
+        'jobs' => [
+            'driver' => 'local',
+            'root' =>
+                rtrim(env('JOB_SUBMISSION_SPOOL', '/data/softepigen/'), '/') .
+                '/jobs',
+            'throw' => false,
+
+            'visibility' => 'private',
+            'directory_visibility' => 'private',
+        ],
     ],
 
     /*

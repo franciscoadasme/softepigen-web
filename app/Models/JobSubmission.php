@@ -87,7 +87,7 @@ class JobSubmission extends Model
      */
     protected function pruning(): void
     {
-        Storage::deleteDirectory("jobs/{$this->uuid}");
+        Storage::disk('jobs')->deleteDirectory($this->uuid);
     }
 
     public function remainingAccessTime(): CarbonInterval

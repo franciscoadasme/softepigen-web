@@ -13,6 +13,7 @@ services:
     volumes:
       - ./storage:/var/www/html/storage:z
       - ./database:/var/www/html/database:z
+      - '${JOB_SUBMISSION_SPOOL:-/data/softepigen}:${JOB_SUBMISSION_SPOOL:-/data/softepigen}:z'
     restart: unless-stopped
 
   queue:
@@ -24,6 +25,7 @@ services:
     volumes:
       - ./storage:/var/www/html/storage:z
       - ./database:/var/www/html/database:z
+      - '${JOB_SUBMISSION_SPOOL:-/data/softepigen}:${JOB_SUBMISSION_SPOOL:-/data/softepigen}:z'
     restart: unless-stopped
 
   schedule:
@@ -34,4 +36,5 @@ services:
     volumes:
       - ./storage:/var/www/html/storage:z
       - ./database:/var/www/html/database:z
+      - '${JOB_SUBMISSION_SPOOL:-/data/softepigen}:${JOB_SUBMISSION_SPOOL:-/data/softepigen}:z'
     restart: unless-stopped

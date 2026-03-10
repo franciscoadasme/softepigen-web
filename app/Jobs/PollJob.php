@@ -38,7 +38,7 @@ class PollJob implements ShouldQueue
                 CompressOutputJob::dispatch($this->uuid)->withoutDelay();
                 break;
             case JobState::Failed:
-                $stderr = Storage::get("jobs/{$sub->uuid}/stderr");
+                $stderr = Storage::disk('jobs')->get("{$sub->uuid}/stderr");
                 $sub->update(['status' => $status, 'stdout' => $stderr]);
                 break;
             default:

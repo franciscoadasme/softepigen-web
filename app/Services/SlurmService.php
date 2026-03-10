@@ -40,7 +40,7 @@ class SlurmService implements JobSubmissionService
             case 'COMPLETED':
                 return JobState::Completed;
             default:
-                if (Storage::size("jobs/{$job->uuid}/stderr") > 0) {
+                if (Storage::disk('jobs')->size("{$job->uuid}/stderr") > 0) {
                     return JobState::Failed;
                 } else {
                     return JobState::Completed;
@@ -50,7 +50,7 @@ class SlurmService implements JobSubmissionService
 
     public function submit(JobSubmission $job): int
     {
-        $workdir = Storage::path("jobs/{$job->uuid}");
+        $workdir = Storage::disk('jobs')->path("{$job->uuid}");
         $result = Process::path($workdir)->run(
             'sbatch --parsable softepigen.slurm',
         );
@@ -64,7 +64,6 @@ class SlurmService implements JobSubmissionService
 
     public function writeScript(JobSubmission $job): string
     {
-        $workdir = Storage::path("jobs/{$job->uuid}");
         $bin = config('jobsubmission.bin');
         $params = $job->parameters;
         $astringency = $params['astringent'] ? 1 : 0;
@@ -103,6 +102,8 @@ class SlurmService implements JobSubmissionService
         rm -f input.fasta.gz
         BASH;
 
-        return Storage::put("jobs/{$job->uuid}/softepigen.slurm", $contents);
+        $disk = Storage::disk('jobs');
+        $disk->makeDirectory($job->uuid);
+        return $disk->put("{$job->uuid}/softepigen.slurm", $contents);
     }
 }

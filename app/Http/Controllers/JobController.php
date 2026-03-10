@@ -26,10 +26,10 @@ class JobController extends Controller
 
     public function download(JobSubmission $jobSubmission, string $filetype)
     {
-        $path = "jobs/{$jobSubmission->uuid}/output-out.{$filetype}.gz";
+        $path = "{$jobSubmission->uuid}/output-out.{$filetype}.gz";
         return response()->streamDownload(
             function () use ($path) {
-                $gz = gzopen(Storage::path($path), 'rb');
+                $gz = gzopen(Storage::disk('jobs')->path($path), 'rb');
                 while (!gzeof($gz)) {
                     echo gzread($gz, 8192);
                 }
@@ -51,7 +51,7 @@ class JobController extends Controller
 
         $uuid = Str::uuid()->toString();
         $file = $request->file('fasta');
-        $path = $file->storeAs("jobs/$uuid", 'input.fasta');
+        Storage::disk('jobs')->putFileAs($uuid, $file, 'input.fasta');
 
         $job = JobSubmission::create([
             'uuid' => $uuid,

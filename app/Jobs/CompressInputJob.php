@@ -7,6 +7,7 @@ use App\Helpers\StorageHelper;
 use App\Models\JobSubmission;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Storage;
 
 class CompressInputJob implements ShouldQueue
 {
@@ -16,9 +17,9 @@ class CompressInputJob implements ShouldQueue
 
     public function handle(): void
     {
-        $path = "jobs/{$this->uuid}/input.fasta";
+        $path = "{$this->uuid}/input.fasta";
         try {
-            StorageHelper::compress($path);
+            StorageHelper::compress(Storage::disk('jobs')->path($path));
             JobSubmission::where('uuid', $this->uuid)->update([
                 'status' => JobState::Ready,
             ]);
