@@ -2,14 +2,17 @@ services:
   web:
     build:
       context: .
+      args:
+        APP_UID: '${APP_UID:-1000}'
+        APP_GID: '${APP_GID:-1000}'
     image: '${APP_IMAGE:-localhost/softepigen:latest}'
     ports:
       - '127.0.0.1:${PORT:-18000}:8080'
     env_file:
       - .env
     volumes:
-      - ./storage:/var/www/html/storage:z,U
-      - ./database:/var/www/html/database:z,U
+      - ./storage:/var/www/html/storage:z
+      - ./database:/var/www/html/database:z
     restart: unless-stopped
 
   queue:
@@ -19,8 +22,8 @@ services:
     env_file:
       - .env
     volumes:
-      - ./storage:/var/www/html/storage:z,U
-      - ./database:/var/www/html/database:z,U
+      - ./storage:/var/www/html/storage:z
+      - ./database:/var/www/html/database:z
     restart: unless-stopped
 
   schedule:
@@ -29,6 +32,6 @@ services:
     env_file:
       - .env
     volumes:
-      - ./storage:/var/www/html/storage:z,U
-      - ./database:/var/www/html/database:z,U
+      - ./storage:/var/www/html/storage:z
+      - ./database:/var/www/html/database:z
     restart: unless-stopped

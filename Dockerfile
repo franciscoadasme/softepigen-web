@@ -39,6 +39,12 @@ RUN mkdir -p storage bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
+# match www-data to host user (uid/gid)
+ARG APP_UID
+ARG APP_GID
+RUN docker-php-serversideup-set-id www-data $APP_UID:$APP_GID \
+    && docker-php-serversideup-set-file-permissions --owner $APP_UID:$APP_GID
+
 USER www-data
 RUN php artisan package:discover --ansi
 
