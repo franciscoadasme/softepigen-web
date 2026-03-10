@@ -6,6 +6,7 @@ return [
     'max_jobs' => (int) env('JOB_SUBMISSION_MAX', 5),
     'poll_interval' => (int) env('JOB_SUBMISSION_POLL_INTERVAL', 30), # seconds
     'retention' => (int) env('JOB_SUBMISSION_RETENTION', 24), # hours
+    'bin' => env('JOB_SUBMISSION_BIN', 'softepigen'),
     'slurm_partition' => env('JOB_SUBMISSION_QUEUE', 'normal'),
     'proxy' => env(
         'JOB_SUBMISSION_PROXY',

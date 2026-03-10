@@ -37,7 +37,7 @@ class BashService implements JobSubmissionService
         #!/usr/bin/env bash
 
         cd $workdir
-        softepigen \
+        "$bin" \
             --amplicon={$params['amplicon_range'][0]},{$params['amplicon_range'][1]} \
             --primer={$params['primer_range'][0]},{$params['primer_range'][1]} \
             --cpg={$params['cpg_range'][0]},{$params['cpg_range'][1]} \

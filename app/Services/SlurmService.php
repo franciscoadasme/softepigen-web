@@ -65,6 +65,7 @@ class SlurmService implements JobSubmissionService
     public function writeScript(JobSubmission $job): string
     {
         $workdir = Storage::path("jobs/{$job->uuid}");
+        $bin = config('jobsubmission.bin');
         $params = $job->parameters;
         $astringency = $params['astringent'] ? 1 : 0;
 
@@ -83,7 +84,7 @@ class SlurmService implements JobSubmissionService
         set -euo pipefail
 
         cd $workdir
-        softepigen \
+        "$bin" \
             --amplicon={$params['amplicon_range'][0]},{$params['amplicon_range'][1]} \
             --primer={$params['primer_range'][0]},{$params['primer_range'][1]} \
             --cpg={$params['cpg_range'][0]},{$params['cpg_range'][1]} \
