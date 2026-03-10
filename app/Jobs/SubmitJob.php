@@ -26,8 +26,8 @@ class SubmitJob implements ShouldQueue
     public function handle(JobSubmissionService $service): void
     {
         $sub = JobSubmission::where('uuid', $this->uuid)->firstOrFail();
-        $service->writeScript($sub);
         try {
+            $service->writeScript($sub);
             $jobId = $service->submit($sub);
             $sub->update(['status' => JobState::Running, 'jobid' => $jobId]);
         } catch (\Throwable $th) {
