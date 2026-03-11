@@ -17,3 +17,7 @@
         font-variant: all-small-caps;
     }
 }
+
+[x-cloak] {
+    display: none !important;
+}
