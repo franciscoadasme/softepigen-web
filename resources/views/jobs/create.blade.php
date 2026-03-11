@@ -30,7 +30,7 @@
                     type="file"
                     name="fasta"
                     accept=".fasta,.fa,.fas,.txt"
-                    class="block w-full text-center transition-colors duration-200 file:mr-4 file:rounded-full file:border-0 file:bg-slate-900 file:px-4 file:py-2 file:font-semibold file:text-white hover:file:bg-slate-800"
+                    class="block w-full text-center transition-colors duration-200 file:mr-4 file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2 file:font-semibold file:text-white"
                     required
                 />
                 <p class="mt-2 text-sm text-slate-500">
@@ -153,7 +153,7 @@
 
             <button
                 type="submit"
-                class="flex w-full items-center justify-center gap-2 rounded-lg bg-slate-900 px-6 py-3 font-semibold text-white shadow-md transition-colors duration-200 hover:bg-slate-800 not-disabled:active:translate-y-0.5 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:opacity-70"
+                class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 font-semibold text-white shadow-md transition-colors duration-200 hover:bg-[oklch(from_var(--color-primary)_calc(l+0.1)_c_h)] not-disabled:active:translate-y-0.5 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:opacity-70"
                 x-bind:disabled="submitting"
             >
                 <svg

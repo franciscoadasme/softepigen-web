@@ -17,12 +17,20 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         @if (config('services.turnstile.key'))
-            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+            <script
+                src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+                async
+                defer
+            ></script>
         @endif
     </head>
-    <body class="bg-slate-100 text-slate-900">
+    <body
+        class="bg-[oklch(from_var(--color-primary)_calc(l+0.6)_calc(c-0.11)_h)] text-slate-900"
+    >
         <div class="mx-auto mt-20 mb-8 w-[52rem] text-center">
-            <h1 class="mb-2 text-4xl font-bold md:text-5xl">🧬Softepigen v2</h1>
+            <h1 class="mb-2 text-4xl font-bold text-primary md:text-5xl">
+                🧬Softepigen v2
+            </h1>
             <p class="text-lg text-slate-600">
                 Primers Design Web-Based Tool for MS-HRM Technique
             </p>

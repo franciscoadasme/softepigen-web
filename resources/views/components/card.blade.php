@@ -5,7 +5,7 @@
         {{ $header }}
     @endisset
 
-    <h2 class="mb-6 text-2xl font-semibold">{{ $title }}</h2>
+    <h2 class="mb-6 text-2xl font-bold text-primary">{{ $title }}</h2>
     {{ $slot }}
 
     @isset($footer)
