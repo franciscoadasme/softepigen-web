@@ -26,7 +26,7 @@
             <p
                 class="small-caps mt-1 mb-2 text-sm font-semibold text-slate-400"
             >
-                Output
+                {{ $job->status->completed() ? 'Download' : 'Output' }}
             </p>
         @endif
 
