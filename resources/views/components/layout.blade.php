@@ -43,7 +43,7 @@
         <footer
             class="mt-20 bg-[oklch(from_var(--color-primary)_calc(l+0.55)_calc(c-0.11)_h)] py-10"
         >
-            <div class="mx-auto flex w-[52rem] gap-10">
+            <div class="mx-auto flex w-[52rem] gap-5">
                 <div class="flex-1">
                     <p class="text-sm text-slate-700">
                         Laboratorio de Bioinformática y Química Computacional
@@ -63,25 +63,44 @@
                 <div
                     class="grid grid-cols-2 items-center justify-items-center gap-5"
                 >
-                    <img
-                        src="{{ asset('images/logo_ucm.png') }}"
-                        alt="Universidad Católica de Maule"
-                        class="h-12"
-                    />
-                    <img
-                        src="{{ asset('images/logo_udes.svg') }}"
-                        alt="Universidad de Santander"
-                        class="h-12"
-                    />
-                    <img
-                        src="{{ asset('images/logo_cieam.png') }}"
-                        alt="Centro de Investigación de Estudios Avanzados del Maule"
-                        class="h-10"
-                    />
+                    <a
+                        href="https://www.ucm.cl"
+                        target="_blank"
+                        title="Universidad Católica de Maule"
+                    >
+                        <img
+                            src="{{ asset('images/logo_ucm.png') }}"
+                            alt="Universidad Católica de Maule"
+                            class="h-12"
+                        />
+                    </a>
+                    <a
+                        href="https://www.udes.edu.co"
+                        target="_blank"
+                        title="Universidad de Santander"
+                    >
+                        <img
+                            src="{{ asset('images/logo_udes.svg') }}"
+                            alt="Universidad de Santander"
+                            class="h-12"
+                        />
+                    </a>
+                    <a
+                        href="https://www.ucm.cl/ciencia-e-investigacion/comunidad-creacion-y-desarrollo/centros-de-investigacion/cieam/"
+                        target="_blank"
+                        title="Centro de Investigación de Estudios Avanzados del Maule"
+                    >
+                        <img
+                            src="{{ asset('images/logo_cieam.png') }}"
+                            alt="Centro de Investigación de Estudios Avanzados del Maule"
+                            class="h-10"
+                        />
+                    </a>
                     <img
                         src="{{ asset('images/logo_lbqc.png') }}"
                         alt="Laboratorio de Bioinformática y Química Computacional"
                         class="h-10"
+                        title="Laboratorio de Bioinformática y Química Computacional"
                     />
                 </div>
             </div>
