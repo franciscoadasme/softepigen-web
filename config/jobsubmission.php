@@ -9,8 +9,8 @@ return [
     'bin' => env('JOB_SUBMISSION_BIN', 'softepigen'),
     'modules' => env('JOB_SUBMISSION_MODULES'),
     'slurm_partition' => env('JOB_SUBMISSION_QUEUE', 'normal'),
-    'proxy' => env(
-        'JOB_SUBMISSION_PROXY',
+    'gateway' => env(
+        'JOB_SUBMISSION_GATEWAY',
         'http://host.containers.internal:9393',
     ),
     'token' => env('JOB_SUBMISSION_TOKEN'),

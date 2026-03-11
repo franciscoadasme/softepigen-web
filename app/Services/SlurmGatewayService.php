@@ -9,18 +9,18 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 
-class SlurmProxyService implements JobSubmissionService
+class SlurmGatewayService implements JobSubmissionService
 {
     public function status(JobSubmission $job): JobState
     {
-        $url = rtrim(config('jobsubmission.proxy'), '/') . '/status';
+        $url = rtrim(config('jobsubmission.gateway'), '/') . '/status';
         $response = Http::timeout(15)
             ->withHeaders($this->authHeaders())
             ->get($url, ['job' => $job->jobid]);
 
         if ($response->failed()) {
             throw new RuntimeException(
-                'Could not retrieve job status from Slurm proxy: ' .
+                'Could not retrieve job status from Slurm gateway: ' .
                     ($response->json('error') ?? $response->body()),
             );
         }
@@ -46,7 +46,7 @@ class SlurmProxyService implements JobSubmissionService
 
     public function submit(JobSubmission $job): int
     {
-        $url = rtrim(config('jobsubmission.proxy'), '/') . '/submit';
+        $url = rtrim(config('jobsubmission.gateway'), '/') . '/submit';
         $workdir =
             rtrim(config('jobsubmission.spool'), '/') . "/jobs/{$job->uuid}";
 
@@ -66,7 +66,7 @@ class SlurmProxyService implements JobSubmissionService
 
         $jobId = $response->json('job_id');
         if ($jobId === null) {
-            throw new RuntimeException('Slurm proxy did not return job id');
+            throw new RuntimeException('Slurm gateway did not return job id');
         }
 
         return (int) $jobId;
