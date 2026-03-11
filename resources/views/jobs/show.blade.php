@@ -40,7 +40,8 @@
                                 'filetype' => $filetype,
                             ])
                         }}"
-                        class="inline-flex size-20 flex-col items-center justify-center rounded-lg bg-slate-900 px-6 py-3 text-slate-50 hover:bg-slate-800 active:translate-y-0.5"
+                        class="inline-flex size-20 flex-col items-center justify-center rounded-lg bg-slate-200 px-6 py-3 hover:bg-slate-300 active:translate-y-0.5"
+                        title="Download {{ strtoupper($filetype) }} file"
                     >
                         <x-dynamic-component
                             :component="'icons.file-' . $filetype "
