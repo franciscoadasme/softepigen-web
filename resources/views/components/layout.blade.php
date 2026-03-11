@@ -15,6 +15,10 @@
         />
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        @if (config('services.turnstile.key'))
+            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+        @endif
     </head>
     <body class="bg-slate-100 text-slate-900">
         <div class="mx-auto mt-20 mb-8 w-[52rem] text-center">

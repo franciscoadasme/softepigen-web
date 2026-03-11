@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Helpers\FASTAHelper;
+use App\Rules\Turnstile;
 use \Closure;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -71,6 +72,7 @@ class StoreJobSubmissionRequest extends FormRequest
             'cpg_min' => 'required|integer|min:1',
             'cpg_max' => 'required|integer|min:1|gt:cpg_min',
             'astringent' => 'boolean',
+            'cf-turnstile-response' => ['required', new Turnstile],
         ];
     }
 }

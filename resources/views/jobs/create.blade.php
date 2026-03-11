@@ -136,6 +136,18 @@
                     </label>
                 </div>
             </div>
+            @if (config('services.turnstile.key'))
+                <div class="flex justify-center">
+                    <div
+                        class="cf-turnstile"
+                        data-sitekey="{{ config('services.turnstile.key') }}"
+                        data-theme="light"
+                    ></div>
+                </div>
+                @error('cf-turnstile-response')
+                    <x-form.error>{{ $message }}</x-form.error>
+                @enderror
+            @endif
             <button
                 type="submit"
                 class="w-full rounded-lg bg-slate-900 px-6 py-3 font-semibold text-white shadow-md transition-colors duration-200 hover:bg-slate-800 active:translate-y-0.5 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:opacity-70"
