@@ -50,7 +50,7 @@ class StoreJobSubmissionRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'fasta' => [
                 'required',
                 'file',
@@ -72,7 +72,12 @@ class StoreJobSubmissionRequest extends FormRequest
             'cpg_min' => 'required|integer|min:1',
             'cpg_max' => 'required|integer|min:1|gt:cpg_min',
             'astringent' => 'boolean',
-            'cf-turnstile-response' => ['required', new Turnstile],
         ];
+
+        if (config('services.turnstile.key')) {
+            $rules['cf-turnstile-response'] = ['required', new Turnstile()];
+        }
+
+        return $rules;
     }
 }
