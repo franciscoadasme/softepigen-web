@@ -19,15 +19,16 @@ class Turnstile implements ValidationRule
             return;
         }
 
-        $response = Http::asForm()
-            ->post(config('services.turnstile.verify_url'), [
+        $response = Http::asForm()->post(
+            config('services.turnstile.verify_url'),
+            [
                 'secret' => $secretKey,
                 'response' => $value,
                 'remoteip' => request()->ip(),
-            ])
-            ->json();
+            ],
+        );
 
-        if (!$response->json('success')) {
+        if (!$response->json('success', false)) {
             $fail('CAPTCHA verification failed. Please try again.');
         }
     }
